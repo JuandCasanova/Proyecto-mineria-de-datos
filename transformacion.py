@@ -23,3 +23,5 @@ print("Dataset limpio:", df.shape, "| matriz numérica:", X.shape)
 #1. Escalamiento
 def distancia(a, b):
     return ((a - b) ** 2).sum() ** 0.5
+c1,c2= X.iloc[0], X.iloc[1]
+print("Distancia entre c1 y c2:", distancia(c1, c2))
