@@ -5,6 +5,7 @@ Documentación técnica y académica del pipeline CRISP-DM.
 | Archivo | Contenido |
 |---------|-----------|
 | [`CATALOGO_FUENTES.md`](CATALOGO_FUENTES.md) | Qué es cada archivo de datos, cada decisión de limpieza y el detalle del cruce |
+| [`VARIABLES_CLAVE.md`](VARIABLES_CLAVE.md) | Variable objetivo, predictoras agrupadas por tratamiento y variables excluidas |
 | [`interpretacion_graficos.md`](interpretacion_graficos.md) | Cómo leer las 9 figuras del EDA: qué dicen y qué no se puede concluir |
 | [`Informe_limpieza_union_CRISP_DM.docx`](Informe_limpieza_union_CRISP_DM.docx) | Informe formal de las fases de limpieza e integración |
 
