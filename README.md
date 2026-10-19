@@ -19,32 +19,79 @@ parámetro, porque cambiarlo cambia el problema.
 
 ## Estructura del proyecto
 
-```
+El repositorio adopta el estándar **CRISP-DM modular**, con las fases
+desacopladas en capas y un orquestador único:
+
+```text
 Proyecto-mineria-de-datos/
-├── datasets_base/                     todas las fuentes y el dataset integrado
-│   ├── vgsales_raw.csv                16.598 x 11   ventas (crudo)
-│   ├── ratings_raw.csv                16.719 x 16   recepción (crudo)
-│   ├── vgsales_limpio.csv             16.598 x 11   ventas, 0 nulos
-│   ├── ratings_limpio.csv             16.716 x 19   recepción, nulos solo de reseñas
-│   ├── videojuegos_integrado.csv      16.598 x 23   LAS DOS FUENTES EN UNA
-│   └── CATALOGO_FUENTES.md            qué es cada archivo y por qué se hizo así
-├── limpieza_datasets.py               script de limpieza
-├── merged.py                          script de integración
+├── main.py                               # orquestador maestro del pipeline
 ├── README.md
-├── Informe_limpieza_union_CRISP_DM.docx
-└── Rubrica de evaluación Informe 1.pdf
+├── requirements.txt                      # dependencias del proyecto
+├── .gitignore
+│
+├── src/                                  # CÓDIGO FUENTE MODULARIZADO POR FASES CRISP-DM
+│   ├── 01_ingesta/                       # Fase 1: auditoría de las fuentes crudas
+│   │   └── auditar_fuentes.py
+│   ├── 02_preparacion/                   # Fase 2: limpieza e integración (ETL)
+│   │   ├── limpieza_datasets.py
+│   │   └── merged.py
+│   ├── 03_eda/                           # Fase 3: análisis exploratorio (parcial)
+│   │   └── eda_exito.py
+│   ├── 04_transformacion/                # Fase 4: diseño de la matriz + escalamiento
+│   │   ├── transformacion.py             # decide qué entra en X y por qué (auditoría de fuga)
+│   │   └── escalamiento.py               # split estratificado + StandardScaler + one-hot
+│   └── 05_modelado/                      # Fase 5: modelo y evaluación (parcial)
+│       └── modelo_exito.py
+│
+├── scripts/                              # experimentación y extensiones futuras
+├── docs/                                 # documentación técnica y académica
+│   ├── index.md                          # índice de documentación
+│   ├── CATALOGO_FUENTES.md               # qué es cada archivo y por qué se hizo así
+│   └── Informe_limpieza_union_CRISP_DM.docx
+├── img/                                  # 9 figuras generadas por el EDA
+│
+├── datos/                                # CAPA BRONZE: fuentes crudas inmutables
+│   ├── vgsales_raw.csv                   # 16.598 x 11   ventas (crudo)
+│   └── ratings_raw.csv                   # 16.719 x 16   recepción (crudo)
+└── datos_procesados/                     # CAPA SILVER & GOLD: artefactos derivados
+    ├── vgsales_limpio.csv                # 16.598 x 11   ventas, 0 nulos
+    ├── ratings_limpio.csv                # 16.716 x 19   recepción, nulos solo de reseñas
+    ├── videojuegos_integrado.csv         # 16.598 x 23   LAS DOS FUENTES EN UNA
+    ├── train_escalado.csv                # 13.278 x 66   split train transformado
+    └── test_escalado.csv                 # 3.320 x 66    split test transformado
 ```
 
 ## Cómo ejecutarlo
 
+Con `pandas`, `numpy` y `scikit-learn` instalados (`pip install -r requirements.txt`):
+
 ```bash
-python limpieza_datasets.py    # crudos -> los dos canónicos limpios
-python merged.py               # limpios -> el dataset integrado
+# Estado del linaje de datos y artefactos
+python main.py --status
+
+# Pipeline completo de principio a fin (End-to-End)
+python main.py --all
+
+# O una fase individual:
+python main.py --fase ingesta          # auditoría de los crudos
+python main.py --fase etl              # limpieza -> dataset integrado
+python main.py --fase eda              # análisis exploratorio
+python main.py --fase transformacion   # diseño de la matriz + escalamiento
+python main.py --fase modelado         # línea base y modelo (parcial)
 ```
 
-Ambas etapas son reproducibles y se validan solas: al ejecutarlas de nuevo
-regeneran los archivos **byte a byte** (comprobado con SHA-256). Requisitos:
-Python 3.10 o superior con `pandas` y `numpy`.
+También se puede correr cada script por separado desde la raíz:
+
+```bash
+python src/01_ingesta/auditar_fuentes.py    # crudos -> informe de auditoría
+python src/02_preparacion/limpieza_datasets.py  # crudos -> los dos canónicos limpios
+python src/02_preparacion/merged.py         # limpios -> dataset integrado
+python src/04_transformacion/escalamiento.py  # integrado -> train_escalado/test_escalado
+```
+
+Las etapas del ETL son reproducibles y se validan solas: al ejecutarlas de
+nuevo regeneran los archivos **byte a byte** (comprobado con SHA-256).
+Requisitos: Python 3.10 o superior con `pandas` y `numpy`.
 
 ## La limpieza en tres decisiones
 
@@ -83,12 +130,19 @@ Resultado: **16.536 de 16.598 ventas encuentran ficha de recepción (99,6 %)**,
    negocio y destinatario del informe.
 2. **Entendimiento de los datos** — perfilado de las dos fuentes: se detectaron
    2.425 valores `"tbd"` en `user_score` (texto, no número), 8.580 juegos sin
-   nota de prensa y 2 duplicados por llave de negocio.
+   nota de prensa y 2 duplicados por llave de negocio. **Reproducible con
+   `src/01_ingesta/auditar_fuentes.py`** (verifica que los crudos sigan
+   siendo los conocidos antes de tocarlos).
 3. **Preparación de los datos** — limpieza e integración. **Fase completa y
-   reproducible:** `limpieza_datasets.py` y `merged.py`.
-4. **Modelado** — pendiente: clasificación contra la línea base de 87,5 %.
-5. **Evaluación** — pendiente: exactitud, recall, F1 y matriz de confusión (el
-   conjunto es desbalanceado, la exactitud sola engañaría).
+   reproducible:** `src/02_preparacion/limpieza_datasets.py` y `merged.py`.
+4. **Modelado** — parcial: `src/05_modelado/modelo_exito.py` calcula la
+   línea base real con `DummyClassifier` (87,5 % de exactitud prediciendo
+   siempre «no éxito»); el modelo real (RandomForest con `class_weight`)
+   está en los TODOs del script.
+5. **Evaluación** — parcial: el split estratificado y las métricas ya están
+   en el esqueleto (recall, F1 y matriz de confusión de la clase 1; el
+   conjunto es desbalanceado, la exactitud sola engañaría). Falta el modelo
+   contra el que comparar.
 6. **Despliegue** — pendiente: panel o informe de hallazgos.
 
 ## Decisiones que conviene no perder de vista
@@ -116,10 +170,21 @@ Resultado: **16.536 de 16.598 ventas encuentran ficha de recepción (99,6 %)**,
 | Cobertura de la fuente de recepción | 99,6 % de las ventas, 48,4 % con nota de prensa |
 
 El detalle completo de cada decisión está en
-[`datasets_base/CATALOGO_FUENTES.md`](datasets_base/CATALOGO_FUENTES.md).
+[`docs/CATALOGO_FUENTES.md`](docs/CATALOGO_FUENTES.md), el índice de
+documentación en [`docs/index.md`](docs/index.md) y cómo leer las 9
+figuras del EDA en
+[`docs/interpretacion_graficos.md`](docs/interpretacion_graficos.md).
 
 ## Tecnologías
 
 - **Lenguaje:** Python 3, scripts ejecutables (`.py`), sin notebooks.
-- **Manipulación:** `pandas`.
+- **Manipulación:** `pandas`, `numpy`.
+- **Modelado:** `scikit-learn`.
+- **Visualización:** `matplotlib`, `seaborn`.
 - **Entorno de trabajo:** Windows con PowerShell y Python 3.14.
+
+## Arquitectura visual y Draw.io en VS Code
+
+La arquitectura del pipeline está en [`Arquitectura_proyecto_mineria.drawio`](Arquitectura_proyecto_mineria.drawio). Ábrela en VS Code con la extensión recomendada **Draw.io Integration** (`hediet.vscode-drawio`) para verla y editarla. El diagrama distingue el pipeline implementado de las fases de modelado, evaluación y despliegue que aún están pendientes.
+
+El archivo [`.mcp.json`](.mcp.json) configura el servidor MCP `drawio-mcp-server` con su editor integrado para que un agente compatible, como GitHub Copilot en VS Code, pueda crear y modificar diagramas Draw.io. Se requiere **Node.js 22 o superior**; al iniciar el servidor por primera vez, `npx` descarga el paquete de npm y VS Code solicitará autorizar el servidor.

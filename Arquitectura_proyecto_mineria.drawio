@@ -1,0 +1,90 @@
+<mxfile host="app.diagrams.net" agent="VS Code" version="24.7.17" type="device">
+  <diagram id="arquitectura-mineria" name="Arquitectura">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1660" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Arquitectura del proyecto de minería de datos" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=none;strokeColor=none;fontColor=#17324D;fontSize=26;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="28" width="1450" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="Predicción del éxito comercial de videojuegos | Flujo de datos CRISP-DM | 1 éxito si las ventas globales alcanzan 1,0 millón de unidades" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=none;strokeColor=none;fontColor=#526579;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="50" y="78" width="1500" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="phase-prep" value="FASE 3 · PREPARACIÓN DE LOS DATOS — IMPLEMENTADA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#81C784;fontColor=#256029;fontSize=14;fontStyle=1;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="135" width="1500" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="raw-sales" value="&lt;b&gt;Fuente 1 · Ventas&lt;/b&gt;&lt;br&gt;datos/vgsales_raw.csv&lt;br&gt;16.598 juegos · ventas por región y global" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF3F8;strokeColor=#6C9BCF;fontColor=#17324D;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="225" width="270" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="raw-ratings" value="&lt;b&gt;Fuente 2 · Recepción&lt;/b&gt;&lt;br&gt;datos/ratings_raw.csv&lt;br&gt;16.719 juegos · crítica y usuarios" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF3F8;strokeColor=#6C9BCF;fontColor=#17324D;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="370" width="270" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="clean" value="&lt;b&gt;limpieza_datasets.py&lt;/b&gt;&lt;br&gt;Limpia y normaliza ambas fuentes&lt;br&gt;Conserva nulos de recepción y banderas sin_*&lt;br&gt;Gestiona duplicados y tipos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#66BB6A;fontColor=#1B5E20;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="390" y="295" width="250" height="125" as="geometry"/>
+        </mxCell>
+        <mxCell id="clean-output" value="&lt;b&gt;Datos limpios&lt;/b&gt;&lt;br&gt;vgsales_limpio.csv&lt;br&gt;ratings_limpio.csv&lt;br&gt;Archivos intermedios reproducibles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F8E9;strokeColor=#81C784;fontColor=#256029;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="710" y="295" width="250" height="125" as="geometry"/>
+        </mxCell>
+        <mxCell id="merge" value="&lt;b&gt;merged.py&lt;/b&gt;&lt;br&gt;Une con clave normalizada:&lt;br&gt;nombre + plataforma + año + género&lt;br&gt;Cardinalidad many_to_one; define exito" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#66BB6A;fontColor=#1B5E20;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="295" width="250" height="125" as="geometry"/>
+        </mxCell>
+        <mxCell id="integrated" value="&lt;b&gt;Dataset integrado&lt;/b&gt;&lt;br&gt;videojuegos_integrado.csv&lt;br&gt;16.598 filas × 23 columnas&lt;br&gt;16.536 con recepción (99,6 %)&lt;br&gt;Objetivo: ventas_globales ≥ 1,0 M" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D9EAD3;strokeColor=#4CAF50;fontColor=#1B5E20;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="285" width="250" height="145" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-sales-clean" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#55758F;strokeWidth=2;" edge="1" parent="1" source="raw-sales" target="clean">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-ratings-clean" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#55758F;strokeWidth=2;" edge="1" parent="1" source="raw-ratings" target="clean">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-clean-output" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#55758F;strokeWidth=2;" edge="1" parent="1" source="clean" target="clean-output">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-output-merge" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#55758F;strokeWidth=2;" edge="1" parent="1" source="clean-output" target="merge">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-merge-integrated" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#55758F;strokeWidth=2;" edge="1" parent="1" source="merge" target="integrated">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="phase-future" value="FASES 4–6 · MODELADO, EVALUACIÓN Y DESPLIEGUE — PENDIENTES" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FFB74D;fontColor=#8A4B08;fontSize=14;fontStyle=1;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="565" width="1500" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="model-input" value="&lt;b&gt;Preparación para modelado&lt;/b&gt;&lt;br&gt;Elegir variables predictoras disponibles&lt;br&gt;Excluir ventas regionales, global_sales y rank&lt;br&gt;global_sales solo define la etiqueta exito" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB74D;fontColor=#6D4C00;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="665" width="300" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="model" value="&lt;b&gt;Fase 4 · Modelado&lt;/b&gt;&lt;br&gt;Clasificación binaria&lt;br&gt;Comparar con baseline: siempre «no éxito» (87,5 %)&lt;br&gt;Algoritmo por definir" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB74D;fontColor=#6D4C00;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="460" y="665" width="285" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="evaluate" value="&lt;b&gt;Fase 5 · Evaluación&lt;/b&gt;&lt;br&gt;Medir recall, F1 y matriz de confusión&lt;br&gt;Reportar exactitud sin usarla como única métrica&lt;br&gt;Validar generalización" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB74D;fontColor=#6D4C00;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="825" y="665" width="285" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="deploy" value="&lt;b&gt;Fase 6 · Despliegue&lt;/b&gt;&lt;br&gt;Panel o informe de hallazgos&lt;br&gt;Comunicar señales y límites de los datos&lt;br&gt;Implementación pendiente" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB74D;fontColor=#6D4C00;fontSize=13;spacing=12;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="665" width="300" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-integrated-input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#D9912B;strokeWidth=2;dashed=1;" edge="1" parent="1" source="integrated" target="model-input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1475" y="525"/>
+              <mxPoint x="230" y="525"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-input-model" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#D9912B;strokeWidth=2;dashed=1;" edge="1" parent="1" source="model-input" target="model">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-model-evaluate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#D9912B;strokeWidth=2;dashed=1;" edge="1" parent="1" source="model" target="evaluate">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-evaluate-deploy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#D9912B;strokeWidth=2;dashed=1;" edge="1" parent="1" source="evaluate" target="deploy">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend" value="Leyenda: &lt;font color=&quot;#256029&quot;&gt;verde = implementado&lt;/font&gt; &amp;nbsp; · &amp;nbsp; &lt;font color=&quot;#8A4B08&quot;&gt;naranja = pendiente / propuesta&lt;/font&gt; &amp;nbsp; · &amp;nbsp; flechas discontinuas = flujo futuro" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=none;strokeColor=none;fontColor=#526579;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="860" width="1350" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="note" value="El archivo integrado y el pipeline de preparación existen en el repositorio. El entrenamiento, las métricas de evaluación y el panel aún no están implementados." style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=none;strokeColor=none;fontColor=#526579;fontSize=12;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="80" y="900" width="1400" height="35" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

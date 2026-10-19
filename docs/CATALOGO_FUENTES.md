@@ -11,8 +11,8 @@ la trazabilidad de los datos.
 
 | # | Fuente | Origen real | Archivo base | Filas x columnas |
 |---|--------|-------------|--------------|------------------|
-| F1 | Ventas de videojuegos | Dataset público de análisis de ventas (vgsales) | `datasets_base/vgsales_raw.csv` | 16.598 x 11 |
-| F2 | Recepción: prensa y usuarios | `mineria_de_datos/archive/Raw Data.csv` | `datasets_base/ratings_raw.csv` | 16.719 x 16 |
+| F1 | Ventas de videojuegos | Dataset público de análisis de ventas (vgsales) | `datos/vgsales_raw.csv` | 16.598 x 11 |
+| F2 | Recepción: prensa y usuarios | `mineria_de_datos/archive/Raw Data.csv` | `datos/ratings_raw.csv` | 16.719 x 16 |
 
 ### F1 · `vgsales_raw.csv`
 Columnas: `Rank, Name, Platform, Year, Genre, Publisher, NA_Sales, EU_Sales,
@@ -50,8 +50,9 @@ proyecto y regeneran los tres archivos derivados **byte a byte** (verificado
 con SHA-256).
 
 ```
-python limpieza_datasets.py     crudos -> vgsales_limpio.csv, ratings_limpio.csv
-python merged.py                limpios -> videojuegos_integrado.csv
+python main.py --fase etl       # o directamente:
+python src/02_preparacion/limpieza_datasets.py   datos/ -> vgsales_limpio.csv, ratings_limpio.csv
+python src/02_preparacion/merged.py              limpios -> videojuegos_integrado.csv
 ```
 
 La limpieza aplica, en este orden: diagnóstico, duplicados (por llave de
@@ -69,11 +70,11 @@ decisión de la tabla de la sección 4 puede recalcularse desde el crudo.
 
 | Archivo | Filas x col. | Nulos | Qué es |
 |---------|--------------|-------|--------|
-| `datasets_base/vgsales_raw.csv` | 16.598 x 11 | 532 | F1 cruda |
-| `datasets_base/ratings_raw.csv` | 16.719 x 16 | 46.716 | F2 cruda |
-| `datasets_base/vgsales_limpio.csv` | 16.598 x 11 | 0 | F1 limpia |
-| `datasets_base/ratings_limpio.csv` | 16.716 x 19 | 42.035 | F2 limpia (nulos solo de recepción) |
-| `datasets_base/videojuegos_integrado.csv` | 16.598 x 23 | 42.341 | **F1 + F2 unidas** |
+| `datos/vgsales_raw.csv` | 16.598 x 11 | 532 | F1 cruda |
+| `datos/ratings_raw.csv` | 16.719 x 16 | 46.716 | F2 cruda |
+| `datos_procesados/vgsales_limpio.csv` | 16.598 x 11 | 0 | F1 limpia |
+| `datos_procesados/ratings_limpio.csv` | 16.716 x 19 | 42.035 | F2 limpia (nulos solo de recepción) |
+| `datos_procesados/videojuegos_integrado.csv` | 16.598 x 23 | 42.341 | **F1 + F2 unidas** |
 
 Nulos del dataset integrado, todos heredados de la fuente de recepción y
 conservados a propósito: `critic_score` y `critic_count` 8.564, `user_score` y
@@ -172,7 +173,7 @@ Dos decisiones que ya están medidas y conviene no repetir al revés:
 
 ## 8. Hallazgos que el dataset integrado ya muestra
 
-Todas las cifras se calculan sobre `datasets_base/videojuegos_integrado.csv`.
+Todas las cifras se calculan sobre `datos_procesados/videojuegos_integrado.csv`.
 
 1. **La nota de la prensa es el predictor más fuerte.** Tasa de éxito por
    segmento de `critic_score` (cuartiles, sobre los 8.034 juegos que sí tienen
@@ -212,7 +213,10 @@ Todas las cifras se calculan sobre `datasets_base/videojuegos_integrado.csv`.
 
 ## 9. Referencias
 
-- `merged.py`: script de integración, reproducible desde la raíz del proyecto.
+- `src/02_preparacion/merged.py`: script de integración, reproducible desde la
+  raíz del proyecto.
+- `src/04_transformacion/transformacion.py`: diseño de la matriz de
+  predictores con la exclusión de columnas con fuga (parcial).
 - `Informe_limpieza_union_CRISP_DM.docx`: informe de la entrega anterior, que
   documenta la limpieza y describe el pipeline de cuatro sesiones que se
   descartó. Se conserva como antecedente; el pipeline actual lo sustituye con un

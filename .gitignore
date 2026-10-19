@@ -1,0 +1,9 @@
+# Capas de datos (se regeneran desde los crudos con main.py --all)
+/datos/
+/datos_procesados/
+
+# Entorno y basura de Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

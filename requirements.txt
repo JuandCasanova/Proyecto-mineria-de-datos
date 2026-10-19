@@ -1,0 +1,12 @@
+# Dependencias principales del proyecto - Minería de Datos (CRISP-DM)
+
+# Procesamiento y análisis numérico
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Aprendizaje automático (división estratificada, línea base, modelos)
+scikit-learn>=1.3.0
+
+# Visualización estadística y figuras del EDA
+matplotlib>=3.7.0
+seaborn>=0.12.0

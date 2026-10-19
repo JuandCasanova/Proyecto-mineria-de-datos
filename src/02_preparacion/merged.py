@@ -1,11 +1,12 @@
 # Mezcla de las dos fuentes de videojuegos
 # Proyecto: análisis del éxito en la industria de los videojuegos
-# Ejecutar desde la raíz del proyecto:  python merged.py
+# Ejecutar desde la raíz del proyecto:
+#   python src/02_preparacion/merged.py
 #
-# Entradas (datasets_base/):
+# Entradas (datos_procesados/):
 #   vgsales_limpio.csv   16.598 x 11   ventas, sin nulos
 #   ratings_limpio.csv   16.716 x 19   recepción, nulos solo de reseñas
-# Salida  (datasets_base/):
+# Salida  (datos_procesados/):
 #   videojuegos_integrado.csv   16.598 x 23   una fila por juego-venta
 #
 # FASE CRISP-DM: 3 · Preparación de los datos (integración)
@@ -16,8 +17,8 @@ import unicodedata
 
 import pandas as pd
 
-RAIZ = Path(__file__).resolve().parent
-CARPETA = RAIZ / "datasets_base"
+RAIZ = Path(__file__).resolve().parents[2]
+CARPETA = RAIZ / "datos_procesados"
 RUTA_VENTAS = CARPETA / "vgsales_limpio.csv"
 RUTA_RATINGS = CARPETA / "ratings_limpio.csv"
 RUTA_SALIDA = CARPETA / "videojuegos_integrado.csv"

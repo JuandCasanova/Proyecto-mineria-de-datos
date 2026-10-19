@@ -1,11 +1,12 @@
 # Limpieza de las dos fuentes de videojuegos
 # Proyecto: análisis del éxito en la industria de los videojuegos
-# Ejecutar desde la raíz del proyecto:  python limpieza_datasets.py
+# Ejecutar desde la raíz del proyecto:
+#   python src/02_preparacion/limpieza_datasets.py
 #
-# Entradas (datasets_base/):
+# Entradas (datos/):
 #   vgsales_raw.csv   16.598 x 11   ventas, 271 nulos en Year y 261 en Publisher
 #   ratings_raw.csv   16.719 x 16   recepción, 2.425 celdas con el texto "tbd"
-# Salidas  (datasets_base/):
+# Salidas  (datos_procesados/):
 #   vgsales_limpio.csv   16.598 x 11   0 nulos
 #   ratings_limpio.csv   16.716 x 19   nulos solo de recepción, con banderas
 #
@@ -25,12 +26,13 @@ import unicodedata
 import numpy as np
 import pandas as pd
 
-RAIZ = Path(__file__).resolve().parent
-CARPETA = RAIZ / "datasets_base"
-RUTA_VENTAS = CARPETA / "vgsales_raw.csv"
-RUTA_RATINGS = CARPETA / "ratings_raw.csv"
-RUTA_SALIDA_VENTAS = CARPETA / "vgsales_limpio.csv"
-RUTA_SALIDA_RATINGS = CARPETA / "ratings_limpio.csv"
+RAIZ = Path(__file__).resolve().parents[2]
+ENTRADAS = RAIZ / "datos"
+SALIDAS = RAIZ / "datos_procesados"
+RUTA_VENTAS = ENTRADAS / "vgsales_raw.csv"
+RUTA_RATINGS = ENTRADAS / "ratings_raw.csv"
+RUTA_SALIDA_VENTAS = SALIDAS / "vgsales_limpio.csv"
+RUTA_SALIDA_RATINGS = SALIDAS / "ratings_limpio.csv"
 
 # Catálogos de referencia. Un valor fuera de aquí no es "dato sucio por
 # definición": es un valor que hay que poder nombrar para poder decidir.
@@ -372,4 +374,4 @@ for ruta, df in [(RUTA_SALIDA_VENTAS, ventas), (RUTA_SALIDA_RATINGS, ratings)]:
     print(f" {ruta.relative_to(RAIZ)}")
     print(f"   {len(df)} filas x {df.shape[1]} columnas | nulos: {nulos} | "
           f"memoria: {df.memory_usage(deep=True).sum() / 1_048_576:.1f} MB")
-print("\n Siguiente paso: python merged.py")
+print("\n Siguiente paso: python src/02_preparacion/merged.py")
