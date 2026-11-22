@@ -40,8 +40,14 @@ Proyecto-mineria-de-datos/
 │   ├── 04_transformacion/                # Fase 4: diseño de la matriz + escalamiento
 │   │   ├── transformacion.py             # decide qué entra en X y por qué (auditoría de fuga)
 │   │   └── escalamiento.py               # split estratificado + StandardScaler + one-hot
-│   └── 05_modelado/                      # Fase 5: modelo y evaluación (parcial)
-│       └── modelo_exito.py
+│   ├── 05_modelado/                      # Fase 5: segmentación y predicción
+│       ├── agrupamiento_no_supervisado.py # K-means + árbol jerárquico en datos incompletos
+│       └── modelo_exito.py               # probabilidad pre-lanzamiento + evaluación temporal
+│   ├── 06_metodos_numericos/             # Extensión académica
+│       ├── regresion_minimos_cuadrados.py # OLS: ventas frente a nota de crítica
+│       └── interpolacion_lagrange.py      # Interpolación local de ventas promedio anuales
+│   └── 07_despliegue/
+│       └── app.py                         # Aplicación web pública Streamlit
 │
 ├── scripts/                              # experimentación y extensiones futuras
 ├── docs/                                 # documentación técnica y académica
@@ -77,7 +83,9 @@ python main.py --fase ingesta          # auditoría de los crudos
 python main.py --fase etl              # limpieza -> dataset integrado
 python main.py --fase eda              # análisis exploratorio
 python main.py --fase transformacion   # diseño de la matriz + escalamiento
-python main.py --fase modelado         # línea base y modelo (parcial)
+python main.py --fase agrupamiento    # K-means + árbol jerárquico en casos incompletos
+python main.py --fase modelado         # entrena y evalúa probabilidades pre-lanzamiento
+python main.py --fase metodos_numericos # mínimos cuadrados + Lagrange
 ```
 
 También se puede correr cada script por separado desde la raíz:
@@ -87,6 +95,8 @@ python src/01_ingesta/auditar_fuentes.py    # crudos -> informe de auditoría
 python src/02_preparacion/limpieza_datasets.py  # crudos -> los dos canónicos limpios
 python src/02_preparacion/merged.py         # limpios -> dataset integrado
 python src/04_transformacion/escalamiento.py  # integrado -> train_escalado/test_escalado
+python src/06_metodos_numericos/regresion_minimos_cuadrados.py
+python src/06_metodos_numericos/interpolacion_lagrange.py
 ```
 
 Las etapas del ETL son reproducibles y se validan solas: al ejecutarlas de
@@ -135,15 +145,86 @@ Resultado: **16.536 de 16.598 ventas encuentran ficha de recepción (99,6 %)**,
    siendo los conocidos antes de tocarlos).
 3. **Preparación de los datos** — limpieza e integración. **Fase completa y
    reproducible:** `src/02_preparacion/limpieza_datasets.py` y `merged.py`.
-4. **Modelado** — parcial: `src/05_modelado/modelo_exito.py` calcula la
-   línea base real con `DummyClassifier` (87,5 % de exactitud prediciendo
-   siempre «no éxito»); el modelo real (RandomForest con `class_weight`)
-   está en los TODOs del script.
-5. **Evaluación** — parcial: el split estratificado y las métricas ya están
-   en el esqueleto (recall, F1 y matriz de confusión de la clase 1; el
-   conjunto es desbalanceado, la exactitud sola engañaría). Falta el modelo
-   contra el que comparar.
-6. **Despliegue** — pendiente: panel o informe de hallazgos.
+4. **Modelado** — `src/05_modelado/modelo_exito.py` compara Regresión
+   Logística y Random Forest mediante validación cruzada;
+   calibra las probabilidades del candidato elegido y guarda el modelo.
+5. **Evaluación** — implementada inicialmente con una prueba temporal:
+   juegos hasta 2011 para entrenar y juegos de 2012 en adelante para probar.
+   Reporta Average Precision, ROC-AUC, Brier, recall, F1 y matriz de confusión.
+6. **Despliegue** — aplicación Streamlit para explorar datos, predecir,
+   consultar análisis y habilitar el reentrenamiento solo para administración.
+
+### Predicción de éxito antes del lanzamiento
+
+Para respetar el momento de negocio, el modelo supervisado usa únicamente
+`year`, `platform`, `genre`, `rating`, `publisher` y `developer`. Las variables
+de recepción (`critic_score`, `user_score`, cantidades de reseñas y banderas
+`sin_*`) se excluyen porque no están disponibles para un juego que aún no sale.
+`publisher` y `developer` se codifican con one-hot y niveles con menos de 20
+ejemplos agrupados; las transformaciones se ajustan dentro de cada fold.
+Los artefactos `train_escalado.csv` y `test_escalado.csv` de la fase 4 son
+transformaciones exploratorias anteriores y no se usan para entrenar este
+modelo; su preprocesador se ajusta dentro del pipeline de validación.
+
+La selección se hace con Average Precision, que es más informativa que la
+exactitud cuando solo 12,5 % de los juegos históricos son éxitos. Las
+probabilidades del modelo ganador se calibran en train. El umbral 0,5 se usa
+solo para reportar métricas de clasificación; no es una decisión final de
+negocio.
+
+Artefactos: `modelo_exito_pre_lanzamiento.joblib`,
+`metricas_pre_lanzamiento.json` y `predicciones_test_pre_lanzamiento.csv`,
+en `datos_procesados/`. La validación temporal es un primer estimado: el
+catálogo termina en 2020 y no representa necesariamente el mercado actual.
+
+### Segmentación exploratoria de casos incompletos
+
+La fase `agrupamiento` selecciona juegos con `rating` **Sin clasificar** o
+con reseñas incompletas (`critic_score`, `critic_count`, `user_score`,
+`user_count` y sus banderas `sin_*`). K-means compara de forma reproducible
+entre 2 y 8 grupos con silueta; el árbol jerárquico usa Ward y genera un
+dendrograma a partir de una muestra reproducible de hasta 1.000 juegos, ya
+que el cálculo jerárquico completo crece cuadráticamente.
+
+Ambos son modelos de agrupamiento no supervisado: K-means aprende centroides
+y asigna juegos a grupos; Ward construye un árbol de fusiones y se corta al
+mismo `k`. Para comparar las particiones, se vuelven a ajustar en la misma
+muestra reproducible y se reportan la silueta (cohesión/separación) y el
+Adjusted Rand Index (acuerdo entre asignaciones). No hay etiquetas verdaderas
+de cluster, así que no corresponde compararlos con accuracy.
+
+El ajuste usa año, plataforma, género, rating y variables de recepción
+disponibles. **No usa ventas, `rank`, nombre ni `exito`**; la tasa de éxito
+observada en el resumen de cada cluster se calcula después, solo para apoyar
+la interpretación de perfiles. Los clusters son exploratorios, no categorías
+verdaderas ni una predicción causal del éxito.
+
+Artefactos: `juegos_incompletos_clusters.csv`, `resumen_clusters.csv`,
+`evaluacion_kmeans.csv`, `muestra_jerarquica.csv` y
+`dendrograma_juegos_incompletos.png`, además de
+`comparacion_modelos_no_supervisados.csv`, todos en `datos_procesados/`.
+
+## Extensión académica: métodos numéricos
+
+Estos métodos se ejecutan como análisis complementarios; **no alimentan el
+clasificador de probabilidad pre-lanzamiento**.
+
+- **Mínimos cuadrados:** ajusta `ventas_globales = a0 + a1 * critic_score`
+  con juegos anteriores a 2012 y evalúa en 2012+. Calcula pendiente,
+  intercepto, residuos, suma de residuos cuadrados, \(R^2\), error típico,
+  MAE y RMSE. Es una relación histórica posterior al lanzamiento porque la
+  nota de crítica aún no existe cuando se hace el pronóstico pre-lanzamiento.
+- **Interpolación de Lagrange:** trabaja con el promedio de ventas por año
+  (solo años con al menos 100 juegos). Para demostrar la interpolación,
+  reserva 2013, usa los tres años observados más cercanos como nodos y compara
+  la estimación cuadrática con el valor real que se dejó fuera. Solo interpola
+  dentro del rango de los nodos; no predice ventas de un juego individual ni
+  rellena los datos originales.
+
+La interpolación usa tres nodos (grado máximo 2) para limitar oscilaciones;
+un polinomio de grado alto no garantiza mejor estimación y puede presentar el
+fenómeno de Runge. Los resultados incluyen CSV/JSON y gráficos en
+`datos_procesados/`.
 
 ## Decisiones que conviene no perder de vista
 
@@ -181,10 +262,49 @@ figuras del EDA en
 - **Manipulación:** `pandas`, `numpy`.
 - **Modelado:** `scikit-learn`.
 - **Visualización:** `matplotlib`, `seaborn`.
-- **Entorno de trabajo:** Windows con PowerShell y Python 3.14.
+- **Entorno de trabajo:** Windows con PowerShell y Python 3.12.
+
+## Despliegue web público
+
+La aplicación está preparada para **Streamlit Community Cloud** y no necesita
+acceder al computador local. La entrada es `src/07_despliegue/app.py`; los
+directorios `datos/` y `datos_procesados/` se incluyen intencionalmente en Git
+porque la app pública necesita los CSV y artefactos en el servidor. El modelo
+supervisado se guarda comprimido para mantenerlo por debajo del límite de
+tamaño por archivo de GitHub.
+
+Para publicar:
+
+1. Publica los cambios y los datos requeridos en el repositorio de GitHub
+   conectado a Streamlit Community Cloud.
+2. En Streamlit Community Cloud, crea una app desde ese repositorio y usa
+   `src/07_despliegue/app.py` como archivo de entrada.
+3. En las opciones avanzadas de despliegue, selecciona **Python 3.12** para
+   coincidir con el entorno en que se guardó el modelo.
+4. En **Settings → Secrets**, configura un secreto fuerte que no se reutilice
+   en otros servicios:
+
+   ```toml
+   ADMIN_PASSWORD = "configurar-un-secreto-fuerte"
+   ```
+
+   No guardes ese valor en el repositorio ni compartas el archivo local
+   `.streamlit/secrets.toml`. La aplicación pública deja deshabilitado el
+   panel administrativo si el secreto no está configurado.
+5. Publica la app y verifica la URL asignada por Streamlit.
+
+La app ofrece predicción individual o por CSV, consulta y descarga de datos,
+resultados de K-means y Ward, y los análisis numéricos. La predicción por CSV
+se procesa en memoria y no se conserva como historial. El panel de
+administración permite reentrenar el modelo y volver a ejecutar los análisis;
+sus resultados se pueden descargar, pero **el almacenamiento de Streamlit
+Community Cloud es efímero**: los modelos y resultados nuevos no se guardan
+automáticamente ni reemplazan los archivos publicados. Para conservar una
+nueva versión de forma permanente, hay que descargar los artefactos y
+actualizar explícitamente el repositorio.
 
 ## Arquitectura visual y Draw.io en VS Code
 
-La arquitectura del pipeline está en [`Arquitectura_proyecto_mineria.drawio`](Arquitectura_proyecto_mineria.drawio). Ábrela en VS Code con la extensión recomendada **Draw.io Integration** (`hediet.vscode-drawio`) para verla y editarla. El diagrama distingue el pipeline implementado de las fases de modelado, evaluación y despliegue que aún están pendientes.
+La arquitectura del pipeline está en [`Arquitectura_proyecto_mineria.drawio`](Arquitectura_proyecto_mineria.drawio). Ábrela en VS Code con la extensión recomendada **Draw.io Integration** (`hediet.vscode-drawio`) para verla y editarla. La aplicación web está implementada; aún falta vincular el repositorio y publicarla en Streamlit Community Cloud.
 
 El archivo [`.mcp.json`](.mcp.json) configura el servidor MCP `drawio-mcp-server` con su editor integrado para que un agente compatible, como GitHub Copilot en VS Code, pueda crear y modificar diagramas Draw.io. Se requiere **Node.js 22 o superior**; al iniciar el servidor por primera vez, `npx` descarga el paquete de npm y VS Code solicitará autorizar el servidor.

@@ -1,0 +1,101 @@
+{
+  "objetivo": "exito=1 si global_sales >= 1.0 millones",
+  "momento_prediccion": "antes del lanzamiento",
+  "predictores": [
+    "year",
+    "platform",
+    "genre",
+    "rating",
+    "publisher",
+    "developer"
+  ],
+  "columnas_excluidas": [
+    "rank",
+    "name",
+    "na_sales",
+    "eu_sales",
+    "jp_sales",
+    "other_sales",
+    "global_sales",
+    "name_clave",
+    "genre_clave",
+    "critic_score",
+    "critic_count",
+    "user_score",
+    "user_count",
+    "sin_critica",
+    "sin_usuarios",
+    "sin_desarrollador"
+  ],
+  "division": {
+    "tipo": "temporal",
+    "anio_inicio_test": 2012,
+    "train_filas": 13841,
+    "train_anio_maximo": 2011,
+    "train_tasa_exito": 0.12636370204464994,
+    "test_filas": 2757,
+    "test_tasa_exito": 0.12042074718897353
+  },
+  "validacion_cruzada": {
+    "tipo": "StratifiedKFold",
+    "folds": 5,
+    "criterio_seleccion": "average_precision",
+    "modelos": {
+      "regresion_logistica": {
+        "average_precision_media": 0.4379201450515596,
+        "average_precision_desviacion": 0.027477123103281587,
+        "roc_auc_media": 0.81777930723492,
+        "roc_auc_desviacion": 0.014496407856419178
+      },
+      "random_forest": {
+        "average_precision_media": 0.49202369130005935,
+        "average_precision_desviacion": 0.01836966586076222,
+        "roc_auc_media": 0.8455268933436875,
+        "roc_auc_desviacion": 0.00948421804557171
+      }
+    }
+  },
+  "modelo_seleccionado": "random_forest",
+  "calibracion_probabilidades": "sigmoid, ajustada solo en train",
+  "umbral_clasificacion": 0.5,
+  "metricas_test": {
+    "baseline_dummy_prior": {
+      "exactitud": 0.8795792528110264,
+      "precision_exito": 0.0,
+      "recall_exito": 0.0,
+      "f1_exito": 0.0,
+      "roc_auc": 0.5,
+      "average_precision": 0.12042074718897353,
+      "brier_score": 0.10595490954783947,
+      "matriz_confusion_vn_fp_fn_vp": [
+        [
+          2425,
+          0
+        ],
+        [
+          332,
+          0
+        ]
+      ]
+    },
+    "modelo": {
+      "exactitud": 0.8828436706565107,
+      "precision_exito": 0.5338345864661654,
+      "recall_exito": 0.21385542168674698,
+      "f1_exito": 0.3053763440860215,
+      "roc_auc": 0.8370711712830705,
+      "average_precision": 0.4188754981365992,
+      "brier_score": 0.08732827451635453,
+      "matriz_confusion_vn_fp_fn_vp": [
+        [
+          2363,
+          62
+        ],
+        [
+          261,
+          71
+        ]
+      ]
+    }
+  }
+}

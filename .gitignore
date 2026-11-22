@@ -1,9 +1,14 @@
-# Capas de datos (se regeneran desde los crudos con main.py --all)
+# Datos y artefactos requeridos por la app pública de Streamlit
 /datos/
+!/datos/
+!/datos/*
 /datos_procesados/
+!/datos_procesados/
+!/datos_procesados/*
 
 # Entorno y basura de Python
 .venv/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.streamlit/secrets.toml

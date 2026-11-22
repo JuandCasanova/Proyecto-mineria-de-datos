@@ -1,0 +1,28 @@
+{
+  "objetivo": "global_sales en millones",
+  "predictor": "critic_score (nota disponible después del lanzamiento)",
+  "ecuacion": "ventas_estimadas = -1.47656546 + 0.03156318 * critic_score",
+  "coeficientes": {
+    "intercepto_a0": -1.4765654646209412,
+    "pendiente_a1": 0.03156318063301227
+  },
+  "entrenamiento": {
+    "division": "year < 2012",
+    "filas": 6805,
+    "anio_minimo": 1985,
+    "anio_maximo": 2011,
+    "suma_residuos_cuadrados": 22678.63300639965,
+    "r2": 0.05596842542469049,
+    "error_tipico_estimacion": 1.8258210135233515
+  },
+  "prueba_temporal": {
+    "filas": 1229,
+    "anio_minimo": 2012,
+    "anio_maximo": 2016,
+    "mae": 0.7590309943226203,
+    "rmse": 1.4689424755191154,
+    "r2": 0.09263324317829558,
+    "predicciones_ventas_negativas": 56
+  },
+  "advertencia": "Análisis histórico: critic_score no está disponible antes del lanzamiento y esta regresión no es el predictor pre-lanzamiento."
+}

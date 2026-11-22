@@ -1,0 +1,31 @@
+{
+  "metodo": "Interpolación polinomial de Lagrange",
+  "variable_interpolada": "promedio de global_sales por año (millones)",
+  "anio_objetivo": 2013,
+  "nodos": [
+    {
+      "year": 2011,
+      "juegos": 1164,
+      "ventas_promedio": 0.4505841924398626,
+      "peso_en_objetivo": -0.3333333333333333
+    },
+    {
+      "year": 2012,
+      "juegos": 657,
+      "ventas_promedio": 0.5533333333333333,
+      "peso_en_objetivo": 1.0
+    },
+    {
+      "year": 2014,
+      "juegos": 583,
+      "ventas_promedio": 0.5786449399656948,
+      "peso_en_objetivo": 0.3333333333333333
+    }
+  ],
+  "grado_maximo": 2,
+  "estimacion": 0.5960202491752774,
+  "valor_real_reservado_para_validacion": 0.6653873873873875,
+  "error_absoluto": 0.06936713821211005,
+  "error_relativo": 0.10425075606629226,
+  "advertencia": "Ejercicio sobre un promedio anual, no una predicción de ventas ni éxito de un videojuego individual. Se interpola dentro del rango de nodos y el año objetivo se excluyó de ellos."
+}

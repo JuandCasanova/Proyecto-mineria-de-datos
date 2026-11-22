@@ -1,0 +1,852 @@
+{
+  "dataset": {
+    "filas": 16598,
+    "columnas": 23,
+    "tasa_exito": 0.12537655139173395,
+    "umbral_exito": "global_sales >= 1,0 millones"
+  },
+  "split": {
+    "semilla": 42,
+    "tamano_test": 0.2,
+    "train_filas": 13278,
+    "test_filas": 3320,
+    "train_exitos": 1665,
+    "test_exitos": 416
+  },
+  "modelo": {
+    "algoritmo": "DecisionTreeClassifier",
+    "criterio": "gini",
+    "max_depth": 4,
+    "max_depth_permitido": 4,
+    "min_samples_leaf": 50,
+    "class_weight": null,
+    "hojas": 12,
+    "nodos": 23,
+    "umbral_operativo": 0.34
+  },
+  "linea_base": {
+    "exactitud": 0.8746987951807229,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "roc_auc": 0.5,
+    "pr_auc": 0.12530120481927712,
+    "matriz_confusion": [
+      [
+        2904,
+        0
+      ],
+      [
+        416,
+        0
+      ]
+    ]
+  },
+  "profundidades": [
+    {
+      "profundidad": "2",
+      "acc_train": 0.8780689862931165,
+      "acc_test": 0.8759036144578313,
+      "brecha": 0.0021653718352852014,
+      "recall_test": 0.028846153846153848,
+      "f1_test": 0.05504587155963303,
+      "roc_auc_test": 0.6665367066645476,
+      "hojas": 4
+    },
+    {
+      "profundidad": "3",
+      "acc_train": 0.8951649344780841,
+      "acc_test": 0.8906626506024097,
+      "brecha": 0.004502283875674418,
+      "recall_test": 0.16105769230769232,
+      "f1_test": 0.26961770623742454,
+      "roc_auc_test": 0.7230742742106379,
+      "hojas": 8
+    },
+    {
+      "profundidad": "4",
+      "acc_train": 0.8989305618316011,
+      "acc_test": 0.9012048192771084,
+      "brecha": -0.002274257445507244,
+      "recall_test": 0.37740384615384615,
+      "f1_test": 0.48909657320872274,
+      "roc_auc_test": 0.7777265939552873,
+      "hojas": 16
+    },
+    {
+      "profundidad": "5",
+      "acc_train": 0.9014158758849224,
+      "acc_test": 0.8963855421686747,
+      "brecha": 0.005030333716247726,
+      "recall_test": 0.24278846153846154,
+      "f1_test": 0.36996336996337,
+      "roc_auc_test": 0.7877264780673872,
+      "hojas": 31
+    },
+    {
+      "profundidad": "8",
+      "acc_train": 0.9166290103931315,
+      "acc_test": 0.8927710843373494,
+      "brecha": 0.023857926055782075,
+      "recall_test": 0.2764423076923077,
+      "f1_test": 0.3924914675767918,
+      "roc_auc_test": 0.7895272932559865,
+      "hojas": 142
+    },
+    {
+      "profundidad": "sin límite",
+      "acc_train": 0.9710799819249887,
+      "acc_test": 0.8716867469879518,
+      "brecha": 0.09939323493703689,
+      "recall_test": 0.3870192307692308,
+      "f1_test": 0.4304812834224599,
+      "roc_auc_test": 0.6817316797785549,
+      "hojas": 1455
+    }
+  ],
+  "validacion_cruzada": {
+    "scoring": "average_precision",
+    "folds": 5,
+    "mejor_score": 0.4626091904079492,
+    "mejor_configuracion": {
+      "class_weight": null,
+      "max_depth": 4,
+      "min_samples_leaf": 50
+    },
+    "top": [
+      {
+        "param_max_depth": 4,
+        "param_min_samples_leaf": 50,
+        "param_class_weight": null,
+        "mean_test_score": 0.4626091904079492,
+        "std_test_score": 0.02328734656296687
+      },
+      {
+        "param_max_depth": 4,
+        "param_min_samples_leaf": 25,
+        "param_class_weight": null,
+        "mean_test_score": 0.4597830333244458,
+        "std_test_score": 0.024934433808611937
+      },
+      {
+        "param_max_depth": 4,
+        "param_min_samples_leaf": 100,
+        "param_class_weight": null,
+        "mean_test_score": 0.4579295959142147,
+        "std_test_score": 0.017762108398033716
+      },
+      {
+        "param_max_depth": 4,
+        "param_min_samples_leaf": 200,
+        "param_class_weight": null,
+        "mean_test_score": 0.44849607733615776,
+        "std_test_score": 0.0191690433576526
+      },
+      {
+        "param_max_depth": 4,
+        "param_min_samples_leaf": 50,
+        "param_class_weight": "balanced",
+        "mean_test_score": 0.44224596772193225,
+        "std_test_score": 0.02565165825737965
+      },
+      {
+        "param_max_depth": 4,
+        "param_min_samples_leaf": 25,
+        "param_class_weight": "balanced",
+        "mean_test_score": 0.4421934013689704,
+        "std_test_score": 0.026373062244471484
+      },
+      {
+        "param_max_depth": 4,
+        "param_min_samples_leaf": 200,
+        "param_class_weight": "balanced",
+        "mean_test_score": 0.4351459776432371,
+        "std_test_score": 0.022696663124312743
+      },
+      {
+        "param_max_depth": 4,
+        "param_min_samples_leaf": 100,
+        "param_class_weight": "balanced",
+        "mean_test_score": 0.4329079904341194,
+        "std_test_score": 0.025494582572803143
+      }
+    ],
+    "f1_out_of_fold": 0.4896354538956397
+  },
+  "metricas": {
+    "train_0_50": {
+      "exactitud": 0.8984786865491791,
+      "precision": 0.6513849092645654,
+      "recall": 0.4096096096096096,
+      "f1": 0.5029498525073747,
+      "roc_auc": 0.801358139332823,
+      "pr_auc": 0.47776477281809127,
+      "matriz_confusion": [
+        [
+          11248,
+          365
+        ],
+        [
+          983,
+          682
+        ]
+      ]
+    },
+    "train_operativo": {
+      "exactitud": 0.8984786865491791,
+      "precision": 0.6513849092645654,
+      "recall": 0.4096096096096096,
+      "f1": 0.5029498525073747,
+      "roc_auc": 0.801358139332823,
+      "pr_auc": 0.47776477281809127,
+      "matriz_confusion": [
+        [
+          11248,
+          365
+        ],
+        [
+          983,
+          682
+        ]
+      ]
+    },
+    "train": {
+      "exactitud": 0.8984786865491791,
+      "precision": 0.6513849092645654,
+      "recall": 0.4096096096096096,
+      "f1": 0.5029498525073747,
+      "roc_auc": 0.801358139332823,
+      "pr_auc": 0.47776477281809127,
+      "matriz_confusion": [
+        [
+          11248,
+          365
+        ],
+        [
+          983,
+          682
+        ]
+      ]
+    },
+    "test_0_50": {
+      "exactitud": 0.9006024096385542,
+      "precision": 0.6902654867256637,
+      "recall": 0.375,
+      "f1": 0.48598130841121495,
+      "roc_auc": 0.780714432347955,
+      "pr_auc": 0.4499546868543517,
+      "matriz_confusion": [
+        [
+          2834,
+          70
+        ],
+        [
+          260,
+          156
+        ]
+      ]
+    },
+    "test_operativo": {
+      "exactitud": 0.9006024096385542,
+      "precision": 0.6902654867256637,
+      "recall": 0.375,
+      "f1": 0.48598130841121495,
+      "roc_auc": 0.780714432347955,
+      "pr_auc": 0.4499546868543517,
+      "matriz_confusion": [
+        [
+          2834,
+          70
+        ],
+        [
+          260,
+          156
+        ]
+      ]
+    },
+    "test": {
+      "exactitud": 0.9006024096385542,
+      "precision": 0.6902654867256637,
+      "recall": 0.375,
+      "f1": 0.48598130841121495,
+      "roc_auc": 0.780714432347955,
+      "pr_auc": 0.4499546868543517,
+      "matriz_confusion": [
+        [
+          2834,
+          70
+        ],
+        [
+          260,
+          156
+        ]
+      ]
+    }
+  },
+  "importancias": {
+    "user_count": 0.5871539401565272,
+    "year": 0.14644308861373626,
+    "platform_PC": 0.13849386963184127,
+    "platform_NES": 0.1027332306742025,
+    "platform_GB": 0.023993831162148392,
+    "critic_score": 0.001182039761544428,
+    "platform_2600": 0.0,
+    "critic_count": 0.0,
+    "platform_3DO": 0.0,
+    "platform_DC": 0.0,
+    "platform_3DS": 0.0,
+    "platform_GBA": 0.0,
+    "platform_DS": 0.0,
+    "platform_GC": 0.0,
+    "platform_GEN": 0.0
+  },
+  "etiquetas_features": {
+    "year": "Año",
+    "critic_score": "Nota críticos",
+    "critic_count": "N.º críticas",
+    "user_score": "Nota usuarios",
+    "user_count": "Reseñas usuarios",
+    "platform_2600": "¿Es 2600?",
+    "platform_3DO": "¿Es 3DO?",
+    "platform_3DS": "¿Es 3DS?",
+    "platform_DC": "¿Es DC?",
+    "platform_DS": "¿Es DS?",
+    "platform_GB": "¿Es GB?",
+    "platform_GBA": "¿Es GBA?",
+    "platform_GC": "¿Es GC?",
+    "platform_GEN": "¿Es GEN?",
+    "platform_GG": "¿Es GG?",
+    "platform_N64": "¿Es N64?",
+    "platform_NES": "¿Es NES?",
+    "platform_NG": "¿Es NG?",
+    "platform_PC": "¿Es PC?",
+    "platform_PCFX": "¿Es PCFX?",
+    "platform_PS": "¿Es PS?",
+    "platform_PS2": "¿Es PS2?",
+    "platform_PS3": "¿Es PS3?",
+    "platform_PS4": "¿Es PS4?",
+    "platform_PSP": "¿Es PSP?",
+    "platform_PSV": "¿Es PSV?",
+    "platform_SAT": "¿Es SAT?",
+    "platform_SCD": "¿Es SCD?",
+    "platform_SNES": "¿Es SNES?",
+    "platform_TG16": "¿Es TG16?",
+    "platform_WS": "¿Es WS?",
+    "platform_Wii": "¿Es Wii?",
+    "platform_WiiU": "¿Es WiiU?",
+    "platform_X360": "¿Es X360?",
+    "platform_XB": "¿Es XB?",
+    "platform_XOne": "¿Es XOne?",
+    "genre_Action": "Género Action",
+    "genre_Adventure": "Género Adventure",
+    "genre_Fighting": "Género Fighting",
+    "genre_Misc": "Género Misc",
+    "genre_Platform": "Género Platform",
+    "genre_Puzzle": "Género Puzzle",
+    "genre_Racing": "Género Racing",
+    "genre_Role-Playing": "Género Role-Playing",
+    "genre_Shooter": "Género Shooter",
+    "genre_Simulation": "Género Simulation",
+    "genre_Sports": "Género Sports",
+    "genre_Strategy": "Género Strategy",
+    "rating_AO": "Rating AO",
+    "rating_E": "Rating E",
+    "rating_E10+": "Rating E10+",
+    "rating_EC": "Rating EC",
+    "rating_K-A": "Rating K-A",
+    "rating_M": "Rating M",
+    "rating_RP": "Rating RP",
+    "rating_Sin clasificar": "Rating Sin clasificar",
+    "rating_T": "Rating T",
+    "rating_nan": "Rating faltante",
+    "sin_critica": "Sin ficha crítica",
+    "sin_usuarios": "Sin ficha usuarios",
+    "sin_desarrollador": "Sin desarrollador",
+    "falta_critic_score": "Falta nota crítica",
+    "falta_critic_count": "Falta n.º críticas",
+    "falta_user_score": "Falta nota usuarios",
+    "falta_user_count": "Falta reseñas usuarios"
+  },
+  "variables": [
+    {
+      "nombre": "user_count",
+      "etiqueta": "Reseñas usuarios",
+      "significado": "Cantidad de reseñas o votos que los usuarios registraron para el juego.",
+      "fuente": "ratings_raw.csv -> columna user_count",
+      "conocida": "Después del lanzamiento",
+      "como_se_lee": "Los cortes con ,5 separan enteros: 65,5 = 65 reseñas o menos vs 66 o más. Es un proxy de popularidad.",
+      "en_arbol": true
+    },
+    {
+      "nombre": "critic_score",
+      "etiqueta": "Nota críticos",
+      "significado": "Promedio de las notas de la prensa especializada, en escala 0–100.",
+      "fuente": "ratings_raw.csv -> columna critic_score",
+      "conocida": "Después del lanzamiento",
+      "como_se_lee": "Cuanto más alta, mejor recepción crítica. El corte 83,5 separa 83,5 o menos de más de 83,5.",
+      "en_arbol": true
+    },
+    {
+      "nombre": "year",
+      "etiqueta": "Año",
+      "significado": "Año en que salió el videojuego.",
+      "fuente": "vgsales_raw.csv -> columna year",
+      "conocida": "Antes o al lanzamiento",
+      "como_se_lee": "Los cortes terminan en ,5 porque el año es entero: 2000,5 = 2000 o antes vs 2001 o después.",
+      "en_arbol": true
+    },
+    {
+      "nombre": "platform_PC",
+      "etiqueta": "¿Es PC?",
+      "significado": "One-hot de plataforma: 1 si el juego salió en PC; 0 si no. Las demás plataformas se codifican igual (platform_PS2, platform_X360, etc.).",
+      "fuente": "vgsales_raw.csv -> platform",
+      "conocida": "Antes del lanzamiento",
+      "como_se_lee": "En el árbol, <= 0,5 = no es PC; > 0,5 = sí es PC.",
+      "en_arbol": true
+    },
+    {
+      "nombre": "platform_NES",
+      "etiqueta": "¿Es NES?",
+      "significado": "One-hot de plataforma: 1 si el juego salió en NES (Nintendo Entertainment System); 0 si no.",
+      "fuente": "vgsales_raw.csv -> platform",
+      "conocida": "Antes del lanzamiento",
+      "como_se_lee": "En el árbol, <= 0,5 = no es NES; > 0,5 = sí es NES.",
+      "en_arbol": true
+    },
+    {
+      "nombre": "platform_GB",
+      "etiqueta": "¿Es GB?",
+      "significado": "One-hot de plataforma: 1 si el juego salió en Game Boy; 0 si no.",
+      "fuente": "vgsales_raw.csv -> platform",
+      "conocida": "Antes del lanzamiento",
+      "como_se_lee": "En el árbol, <= 0,5 = no es Game Boy; > 0,5 = sí es Game Boy.",
+      "en_arbol": true
+    },
+    {
+      "nombre": "critic_count",
+      "etiqueta": "N.º críticas",
+      "significado": "Cantidad de reseñas de críticos registradas para el juego.",
+      "fuente": "ratings_raw.csv -> columna critic_count",
+      "conocida": "Después del lanzamiento",
+      "como_se_lee": "Más críticas = mayor cobertura mediática. El corte 25,5 separa 25 o menos de 26 o más.",
+      "en_arbol": false
+    },
+    {
+      "nombre": "user_score",
+      "etiqueta": "Nota usuarios",
+      "significado": "Promedio de las notas de usuarios, en escala 0–10.",
+      "fuente": "ratings_raw.csv -> columna user_score",
+      "conocida": "Después del lanzamiento",
+      "como_se_lee": "Cuanto más alta, mejor recepción de usuarios.",
+      "en_arbol": false
+    },
+    {
+      "nombre": "sin_critica",
+      "etiqueta": "Sin ficha crítica",
+      "significado": "Vale 1 si el juego no tiene ficha en la fuente de críticos; 0 si sí la tiene.",
+      "fuente": "derivada de ratings_raw.csv",
+      "conocida": "Después del lanzamiento",
+      "como_se_lee": "0 = sí tiene ficha; 1 = no tiene ficha. Evita confundir 'sin nota' con 'nota baja'.",
+      "en_arbol": false
+    },
+    {
+      "nombre": "sin_usuarios",
+      "etiqueta": "Sin ficha usuarios",
+      "significado": "Vale 1 si el juego no tiene ficha en la fuente de usuarios; 0 si sí la tiene.",
+      "fuente": "derivada de ratings_raw.csv",
+      "conocida": "Después del lanzamiento",
+      "como_se_lee": "0 = sí tiene ficha; 1 = no tiene ficha.",
+      "en_arbol": false
+    },
+    {
+      "nombre": "sin_desarrollador",
+      "etiqueta": "Sin desarrollador",
+      "significado": "Vale 1 si el desarrollador no aparece en la fuente; 0 si está registrado.",
+      "fuente": "derivada de ratings_raw.csv",
+      "conocida": "Antes o al lanzamiento",
+      "como_se_lee": "0 = desarrollador registrado; 1 = falta el dato.",
+      "en_arbol": false
+    },
+    {
+      "nombre": "falta_*",
+      "etiqueta": "Falta dato de recepción",
+      "significado": "Indicadores MNAR: falta_critic_score, falta_critic_count, falta_user_score y falta_user_count valen 1 si el dato faltaba antes de imputar.",
+      "fuente": "derivada de ratings_raw.csv antes de la mediana",
+      "conocida": "Después del lanzamiento",
+      "como_se_lee": "0 = dato completo; 1 = faltaba y se imputó con la mediana. Conserva el patrón de ausencia.",
+      "en_arbol": false
+    },
+    {
+      "nombre": "genre_*",
+      "etiqueta": "Género = X",
+      "significado": "One-hot del género: 1 si el juego pertenece a ese género (Action, Sports, Role-Playing, etc.); 0 si no.",
+      "fuente": "vgsales_raw.csv -> genre",
+      "conocida": "Antes del lanzamiento",
+      "como_se_lee": "1 = es de ese género; 0 = no. La categoría de referencia queda implícita.",
+      "en_arbol": false
+    },
+    {
+      "nombre": "rating_*",
+      "etiqueta": "Rating = X",
+      "significado": "One-hot de la clasificación ESRB: 1 si el juego tiene esa clasificación (E, E10+, T, M, etc.); 0 si no.",
+      "fuente": "ratings_raw.csv -> rating",
+      "conocida": "Antes del lanzamiento",
+      "como_se_lee": "1 = tiene esa clasificación; 0 = no. 'Sin clasificar' y el faltante tienen su propia columna.",
+      "en_arbol": false
+    }
+  ],
+  "arbol_legible": [
+    {
+      "nodo": 0,
+      "profundidad": 0,
+      "variable": "user_count",
+      "variable_legible": "Reseñas usuarios",
+      "umbral": 65.5,
+      "pregunta": "¿Tiene más de 65 reseñas de usuarios?",
+      "n": 13278,
+      "tasa_exito": 0.1253953908721193,
+      "no": {
+        "descripcion": "tiene 65 reseñas de usuarios o menos",
+        "n": 11541,
+        "tasa_exito": 0.0843947664847067
+      },
+      "si": {
+        "descripcion": "tiene más de 65 reseñas de usuarios",
+        "n": 1737,
+        "tasa_exito": 0.3978123200921128
+      },
+      "ganancia_gini": 0.022338528383442607,
+      "por_que": "El grupo 'Sí' tiene 39,8 % de éxito y el 'No' 8,4 %; la diferencia es de +31,3 puntos porcentuales. Reduce la impureza Gini en 0.022."
+    },
+    {
+      "nodo": 1,
+      "profundidad": 1,
+      "variable": "platform_NES",
+      "variable_legible": "¿Es NES?",
+      "umbral": 0.5,
+      "pregunta": "¿Es de NES?",
+      "n": 11541,
+      "tasa_exito": 0.0843947664847067,
+      "no": {
+        "descripcion": "no es de NES",
+        "n": 11463,
+        "tasa_exito": 0.07956032452237634
+      },
+      "si": {
+        "descripcion": "es de NES",
+        "n": 78,
+        "tasa_exito": 0.7948717948717948
+      },
+      "ganancia_gini": 0.0068695199186126375,
+      "por_que": "El grupo 'Sí' tiene 79,5 % de éxito y el 'No' 8,0 %; la diferencia es de +71,5 puntos porcentuales. Reduce la impureza Gini en 0.007."
+    },
+    {
+      "nodo": 2,
+      "profundidad": 2,
+      "variable": "year",
+      "variable_legible": "Año",
+      "umbral": 2000.5,
+      "pregunta": "¿Salió en 2001 o después?",
+      "n": 11463,
+      "tasa_exito": 0.07956032452237634,
+      "no": {
+        "descripcion": "salió en 2000 o antes",
+        "n": 1729,
+        "tasa_exito": 0.17813765182186234
+      },
+      "si": {
+        "descripcion": "salió en 2001 o después",
+        "n": 9734,
+        "tasa_exito": 0.062050544483254574
+      },
+      "ganancia_gini": 0.0034521346357170024,
+      "por_que": "El grupo 'Sí' tiene 6,2 % de éxito y el 'No' 17,8 %; la diferencia es de -11,6 puntos porcentuales. Reduce la impureza Gini en 0.003."
+    },
+    {
+      "nodo": 3,
+      "profundidad": 3,
+      "variable": "platform_GB",
+      "variable_legible": "¿Es GB?",
+      "umbral": 0.5,
+      "pregunta": "¿Es de Game Boy?",
+      "n": 1729,
+      "tasa_exito": 0.17813765182186234,
+      "no": {
+        "descripcion": "no es de Game Boy",
+        "n": 1663,
+        "tasa_exito": 0.1635598316295851
+      },
+      "si": {
+        "descripcion": "es de Game Boy",
+        "n": 66,
+        "tasa_exito": 0.5454545454545454
+      },
+      "ganancia_gini": 0.010709359257926227,
+      "por_que": "El grupo 'Sí' tiene 54,5 % de éxito y el 'No' 16,4 %; la diferencia es de +38,2 puntos porcentuales. Reduce la impureza Gini en 0.011."
+    },
+    {
+      "nodo": 6,
+      "profundidad": 3,
+      "variable": "user_count",
+      "variable_legible": "Reseñas usuarios",
+      "umbral": 25.5,
+      "pregunta": "¿Tiene más de 25 reseñas de usuarios?",
+      "n": 9734,
+      "tasa_exito": 0.062050544483254574,
+      "no": {
+        "descripcion": "tiene 25 reseñas de usuarios o menos",
+        "n": 8533,
+        "tasa_exito": 0.04324387671393414
+      },
+      "si": {
+        "descripcion": "tiene más de 25 reseñas de usuarios",
+        "n": 1201,
+        "tasa_exito": 0.19567027477102414
+      },
+      "ganancia_gini": 0.005025883749896598,
+      "por_que": "El grupo 'Sí' tiene 19,6 % de éxito y el 'No' 4,3 %; la diferencia es de +15,2 puntos porcentuales. Reduce la impureza Gini en 0.005."
+    },
+    {
+      "nodo": 10,
+      "profundidad": 1,
+      "variable": "platform_PC",
+      "variable_legible": "¿Es PC?",
+      "umbral": 0.5,
+      "pregunta": "¿Es de PC?",
+      "n": 1737,
+      "tasa_exito": 0.3978123200921128,
+      "no": {
+        "descripcion": "no es de PC",
+        "n": 1340,
+        "tasa_exito": 0.49328358208955225
+      },
+      "si": {
+        "descripcion": "es de PC",
+        "n": 397,
+        "tasa_exito": 0.07556675062972293
+      },
+      "ganancia_gini": 0.061530382379315726,
+      "por_que": "El grupo 'Sí' tiene 7,6 % de éxito y el 'No' 49,3 %; la diferencia es de -41,8 puntos porcentuales. Reduce la impureza Gini en 0.062."
+    },
+    {
+      "nodo": 11,
+      "profundidad": 2,
+      "variable": "user_count",
+      "variable_legible": "Reseñas usuarios",
+      "umbral": 346.0,
+      "pregunta": "¿Tiene más de 346 reseñas de usuarios?",
+      "n": 1340,
+      "tasa_exito": 0.49328358208955225,
+      "no": {
+        "descripcion": "tiene 346 reseñas de usuarios o menos",
+        "n": 985,
+        "tasa_exito": 0.3766497461928934
+      },
+      "si": {
+        "descripcion": "tiene más de 346 reseñas de usuarios",
+        "n": 355,
+        "tasa_exito": 0.8169014084507042
+      },
+      "ganancia_gini": 0.07548957690608006,
+      "por_que": "El grupo 'Sí' tiene 81,7 % de éxito y el 'No' 37,7 %; la diferencia es de +44,0 puntos porcentuales. Reduce la impureza Gini en 0.075."
+    },
+    {
+      "nodo": 12,
+      "profundidad": 3,
+      "variable": "year",
+      "variable_legible": "Año",
+      "umbral": 2010.5,
+      "pregunta": "¿Salió en 2011 o después?",
+      "n": 985,
+      "tasa_exito": 0.3766497461928934,
+      "no": {
+        "descripcion": "salió en 2010 o antes",
+        "n": 548,
+        "tasa_exito": 0.5364963503649635
+      },
+      "si": {
+        "descripcion": "salió en 2011 o después",
+        "n": 437,
+        "tasa_exito": 0.17620137299771166
+      },
+      "ganancia_gini": 0.06408198353413122,
+      "por_que": "El grupo 'Sí' tiene 17,6 % de éxito y el 'No' 53,6 %; la diferencia es de -36,0 puntos porcentuales. Reduce la impureza Gini en 0.064."
+    },
+    {
+      "nodo": 15,
+      "profundidad": 3,
+      "variable": "year",
+      "variable_legible": "Año",
+      "umbral": 2011.5,
+      "pregunta": "¿Salió en 2012 o después?",
+      "n": 355,
+      "tasa_exito": 0.8169014084507042,
+      "no": {
+        "descripcion": "salió en 2011 o antes",
+        "n": 160,
+        "tasa_exito": 0.95
+      },
+      "si": {
+        "descripcion": "salió en 2012 o después",
+        "n": 195,
+        "tasa_exito": 0.7076923076923077
+      },
+      "ganancia_gini": 0.029071154990615355,
+      "por_que": "El grupo 'Sí' tiene 70,8 % de éxito y el 'No' 95,0 %; la diferencia es de -24,2 puntos porcentuales. Reduce la impureza Gini en 0.029."
+    },
+    {
+      "nodo": 18,
+      "profundidad": 2,
+      "variable": "user_count",
+      "variable_legible": "Reseñas usuarios",
+      "umbral": 1627.5,
+      "pregunta": "¿Tiene más de 1627 reseñas de usuarios?",
+      "n": 397,
+      "tasa_exito": 0.07556675062972293,
+      "no": {
+        "descripcion": "tiene 1627 reseñas de usuarios o menos",
+        "n": 339,
+        "tasa_exito": 0.038348082595870206
+      },
+      "si": {
+        "descripcion": "tiene más de 1627 reseñas de usuarios",
+        "n": 58,
+        "tasa_exito": 0.29310344827586204
+      },
+      "ganancia_gini": 0.016192852269744457,
+      "por_que": "El grupo 'Sí' tiene 29,3 % de éxito y el 'No' 3,8 %; la diferencia es de +25,5 puntos porcentuales. Reduce la impureza Gini en 0.016."
+    },
+    {
+      "nodo": 19,
+      "profundidad": 3,
+      "variable": "critic_score",
+      "variable_legible": "Nota críticos",
+      "umbral": 83.5,
+      "pregunta": "¿Tiene nota de críticos mayor que 83,5?",
+      "n": 339,
+      "tasa_exito": 0.038348082595870206,
+      "no": {
+        "descripcion": "tiene nota de críticos de 83,5 o menos",
+        "n": 248,
+        "tasa_exito": 0.016129032258064516
+      },
+      "si": {
+        "descripcion": "tiene nota de críticos mayor que 83,5",
+        "n": 91,
+        "tasa_exito": 0.0989010989010989
+      },
+      "ganancia_gini": 0.0026908610347837134,
+      "por_que": "El grupo 'Sí' tiene 9,9 % de éxito y el 'No' 1,6 %; la diferencia es de +8,3 puntos porcentuales. Reduce la impureza Gini en 0.003."
+    }
+  ],
+  "reglas": [
+    {
+      "camino": "user_count > 65.5 y platform != PC y user_count > 346 y year <= 2011.5",
+      "camino_legible": "tiene más de 65 reseñas de usuarios y no es de PC y tiene más de 346 reseñas de usuarios y salió en 2011 o antes",
+      "lectura": "Si el juego tiene más de 65 reseñas de usuarios y no es de PC y tiene más de 346 reseñas de usuarios y salió en 2011 o antes -> 95,0 % de éxito (160 juegos).",
+      "n": 160,
+      "tasa_exito": 0.95,
+      "clase": 1,
+      "veredicto": "Éxito"
+    },
+    {
+      "camino": "user_count <= 65.5 y platform == NES",
+      "camino_legible": "tiene 65 reseñas de usuarios o menos y es de NES",
+      "lectura": "Si el juego tiene 65 reseñas de usuarios o menos y es de NES -> 79,5 % de éxito (78 juegos).",
+      "n": 78,
+      "tasa_exito": 0.7948717948717948,
+      "clase": 1,
+      "veredicto": "Éxito"
+    },
+    {
+      "camino": "user_count > 65.5 y platform != PC y user_count > 346 y year > 2011.5",
+      "camino_legible": "tiene más de 65 reseñas de usuarios y no es de PC y tiene más de 346 reseñas de usuarios y salió en 2012 o después",
+      "lectura": "Si el juego tiene más de 65 reseñas de usuarios y no es de PC y tiene más de 346 reseñas de usuarios y salió en 2012 o después -> 70,8 % de éxito (195 juegos).",
+      "n": 195,
+      "tasa_exito": 0.7076923076923077,
+      "clase": 1,
+      "veredicto": "Éxito"
+    },
+    {
+      "camino": "user_count <= 65.5 y platform != NES y year <= 2000.5 y platform == GB",
+      "camino_legible": "tiene 65 reseñas de usuarios o menos y no es de NES y salió en 2000 o antes y es de Game Boy",
+      "lectura": "Si el juego tiene 65 reseñas de usuarios o menos y no es de NES y salió en 2000 o antes y es de Game Boy -> 54,5 % de éxito (66 juegos).",
+      "n": 66,
+      "tasa_exito": 0.5454545454545454,
+      "clase": 1,
+      "veredicto": "Éxito"
+    },
+    {
+      "camino": "user_count > 65.5 y platform != PC y user_count <= 346 y year <= 2010.5",
+      "camino_legible": "tiene más de 65 reseñas de usuarios y no es de PC y tiene 346 reseñas de usuarios o menos y salió en 2010 o antes",
+      "lectura": "Si el juego tiene más de 65 reseñas de usuarios y no es de PC y tiene 346 reseñas de usuarios o menos y salió en 2010 o antes -> 53,6 % de éxito (548 juegos).",
+      "n": 548,
+      "tasa_exito": 0.5364963503649635,
+      "clase": 1,
+      "veredicto": "Éxito"
+    },
+    {
+      "camino": "user_count > 65.5 y platform == PC y user_count > 1627.5",
+      "camino_legible": "tiene más de 65 reseñas de usuarios y es de PC y tiene más de 1627 reseñas de usuarios",
+      "lectura": "Si el juego tiene más de 65 reseñas de usuarios y es de PC y tiene más de 1627 reseñas de usuarios -> 29,3 % de éxito (58 juegos).",
+      "n": 58,
+      "tasa_exito": 0.29310344827586204,
+      "clase": 0,
+      "veredicto": "No éxito"
+    },
+    {
+      "camino": "user_count <= 65.5 y platform != NES y year > 2000.5 y user_count > 25.5",
+      "camino_legible": "tiene 65 reseñas de usuarios o menos y no es de NES y salió en 2001 o después y tiene más de 25 reseñas de usuarios",
+      "lectura": "Si el juego tiene 65 reseñas de usuarios o menos y no es de NES y salió en 2001 o después y tiene más de 25 reseñas de usuarios -> 19,6 % de éxito (1201 juegos).",
+      "n": 1201,
+      "tasa_exito": 0.19567027477102414,
+      "clase": 0,
+      "veredicto": "No éxito"
+    },
+    {
+      "camino": "user_count > 65.5 y platform != PC y user_count <= 346 y year > 2010.5",
+      "camino_legible": "tiene más de 65 reseñas de usuarios y no es de PC y tiene 346 reseñas de usuarios o menos y salió en 2011 o después",
+      "lectura": "Si el juego tiene más de 65 reseñas de usuarios y no es de PC y tiene 346 reseñas de usuarios o menos y salió en 2011 o después -> 17,6 % de éxito (437 juegos).",
+      "n": 437,
+      "tasa_exito": 0.17620137299771166,
+      "clase": 0,
+      "veredicto": "No éxito"
+    },
+    {
+      "camino": "user_count <= 65.5 y platform != NES y year <= 2000.5 y platform != GB",
+      "camino_legible": "tiene 65 reseñas de usuarios o menos y no es de NES y salió en 2000 o antes y no es de Game Boy",
+      "lectura": "Si el juego tiene 65 reseñas de usuarios o menos y no es de NES y salió en 2000 o antes y no es de Game Boy -> 16,4 % de éxito (1663 juegos).",
+      "n": 1663,
+      "tasa_exito": 0.1635598316295851,
+      "clase": 0,
+      "veredicto": "No éxito"
+    },
+    {
+      "camino": "user_count > 65.5 y platform == PC y user_count <= 1627.5 y critic_score > 83.5",
+      "camino_legible": "tiene más de 65 reseñas de usuarios y es de PC y tiene 1627 reseñas de usuarios o menos y tiene nota de críticos mayor que 83,5",
+      "lectura": "Si el juego tiene más de 65 reseñas de usuarios y es de PC y tiene 1627 reseñas de usuarios o menos y tiene nota de críticos mayor que 83,5 -> 9,9 % de éxito (91 juegos).",
+      "n": 91,
+      "tasa_exito": 0.0989010989010989,
+      "clase": 0,
+      "veredicto": "No éxito"
+    },
+    {
+      "camino": "user_count <= 65.5 y platform != NES y year > 2000.5 y user_count <= 25.5",
+      "camino_legible": "tiene 65 reseñas de usuarios o menos y no es de NES y salió en 2001 o después y tiene 25 reseñas de usuarios o menos",
+      "lectura": "Si el juego tiene 65 reseñas de usuarios o menos y no es de NES y salió en 2001 o después y tiene 25 reseñas de usuarios o menos -> 4,3 % de éxito (8533 juegos).",
+      "n": 8533,
+      "tasa_exito": 0.04324387671393414,
+      "clase": 0,
+      "veredicto": "No éxito"
+    },
+    {
+      "camino": "user_count > 65.5 y platform == PC y user_count <= 1627.5 y critic_score <= 83.5",
+      "camino_legible": "tiene más de 65 reseñas de usuarios y es de PC y tiene 1627 reseñas de usuarios o menos y tiene nota de críticos de 83,5 o menos",
+      "lectura": "Si el juego tiene más de 65 reseñas de usuarios y es de PC y tiene 1627 reseñas de usuarios o menos y tiene nota de críticos de 83,5 o menos -> 1,6 % de éxito (248 juegos).",
+      "n": 248,
+      "tasa_exito": 0.016129032258064516,
+      "clase": 0,
+      "veredicto": "No éxito"
+    }
+  ]
+}

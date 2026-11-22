@@ -1,0 +1,3 @@
+modelo,algoritmo,filas_ajuste,k,silueta_muestra,ari_vs_kmeans
+K-means,particional,1000,6,0.19822693290823515,
+Árbol jerárquico (Ward),aglomerativo Ward,1000,6,0.20058943841380136,0.7321503624235699

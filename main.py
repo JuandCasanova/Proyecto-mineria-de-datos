@@ -14,7 +14,9 @@ Uso:
   python main.py --fase etl                 # Fase 2: Limpieza e integración de las dos fuentes
   python main.py --fase eda                 # Fase 3: Análisis Exploratorio de Datos
   python main.py --fase transformacion      # Fase 4: Codificación y escalamiento de características
-  python main.py --fase modelado            # Fase 5: Modelo predictivo y evaluación vs línea base
+  python main.py --fase agrupamiento        # Fase 5: K-means y árbol jerárquico
+  python main.py --fase modelado            # Fase 5: Entrenamiento y evaluación temporal
+  python main.py --fase metodos_numericos   # Extensión: mínimos cuadrados y Lagrange
   python main.py --status                   # Estado del linaje de datos y artefactos
 =============================================================================
 """
@@ -54,17 +56,35 @@ FASES = {
         "nombre": "Transformación & Escalamiento de Características",
         "scripts": ["src/04_transformacion/transformacion.py",
                     "src/04_transformacion/escalamiento.py"],
-        "descripcion": "Exclusión de fuga, split estratificado, StandardScaler y one-hot de las categóricas."
+        "descripcion": "Transformación exploratoria; el modelo supervisado construye su propio preprocesador y split temporal."
+    },
+    "agrupamiento": {
+        "numero": "Fase 5",
+        "nombre": "Modelado No Supervisado y Segmentación",
+        "scripts": ["src/05_modelado/agrupamiento_no_supervisado.py"],
+        "descripcion": "K-means y árbol jerárquico para explorar juegos sin clasificación o con reseñas incompletas."
     },
     "modelado": {
         "numero": "Fase 5",
         "nombre": "Modelado Predictivo & Evaluación vs Línea Base",
         "scripts": ["src/05_modelado/modelo_exito.py"],
-        "descripcion": "Split estratificado, línea base del 87,5 % y modelo real pendiente."
+        "descripcion": "Compara regresión logística y Random Forest con variables pre-lanzamiento; evalúa probabilidades en años posteriores."
+    },
+    "metodos_numericos": {
+        "numero": "Extensión",
+        "nombre": "Métodos Numéricos",
+        "scripts": [
+            "src/06_metodos_numericos/regresion_minimos_cuadrados.py",
+            "src/06_metodos_numericos/interpolacion_lagrange.py",
+        ],
+        "descripcion": "Análisis histórico de ventas por mínimos cuadrados e interpolación local de promedios anuales con Lagrange."
     }
 }
 
-ORDEN_FASES = ["ingesta", "etl", "eda", "transformacion", "modelado"]
+ORDEN_FASES = [
+    "ingesta", "etl", "eda", "transformacion", "agrupamiento", "modelado",
+    "metodos_numericos",
+]
 
 
 def imprimir_banner():
@@ -155,6 +175,22 @@ def mostrar_status():
         ("Dataset integrado (Silver)", procesados / "videojuegos_integrado.csv"),
         ("Split train escalado (Gold)", procesados / "train_escalado.csv"),
         ("Split test escalado (Gold)", procesados / "test_escalado.csv"),
+        ("Asignaciones K-means", procesados / "juegos_incompletos_clusters.csv"),
+        ("Resumen de clusters", procesados / "resumen_clusters.csv"),
+        ("Evaluación K-means", procesados / "evaluacion_kmeans.csv"),
+        ("Muestra jerárquica", procesados / "muestra_jerarquica.csv"),
+        ("Comparación K-means y jerárquico", procesados / "comparacion_modelos_no_supervisados.csv"),
+        ("Dendrograma jerárquico", procesados / "dendrograma_juegos_incompletos.png"),
+        ("Modelo pre-lanzamiento", procesados / "modelo_exito_pre_lanzamiento.joblib"),
+        ("Métricas pre-lanzamiento", procesados / "metricas_pre_lanzamiento.json"),
+        ("Predicciones temporales", procesados / "predicciones_test_pre_lanzamiento.csv"),
+        ("Modelo mínimos cuadrados", procesados / "regresion_minimos_cuadrados.joblib"),
+        ("Métricas mínimos cuadrados", procesados / "metricas_regresion_minimos_cuadrados.json"),
+        ("Predicciones de regresión", procesados / "predicciones_regresion_critica_ventas.csv"),
+        ("Gráfico mínimos cuadrados", procesados / "regresion_minimos_cuadrados.png"),
+        ("Resultado interpolación Lagrange", procesados / "resultado_interpolacion_lagrange.csv"),
+        ("Métricas interpolación Lagrange", procesados / "metricas_interpolacion_lagrange.json"),
+        ("Gráfico interpolación Lagrange", procesados / "interpolacion_lagrange_ventas_anuales.png"),
         ("fig1 barras balance de clase", img / "fig1_barras_exito.png"),
         ("fig2 barras tasa por género", img / "fig2_barras_genero.png"),
         ("fig3 histograma ventas global", img / "fig3_hist_ventas_global.png"),
@@ -164,7 +200,6 @@ def mostrar_status():
         ("fig7 matriz de dispersión", img / "fig7_matriz_dispersion.png"),
         ("fig8 líneas evolución por año", img / "fig8_lineas_evolucion_anio.png"),
         ("fig9 barras top plataformas", img / "fig9_barras_plataforma.png"),
-        ("Modelo entrenado (Gold)", procesados / "modelo_exito.joblib"),
     ]
     for nombre, ruta in archivos_clave:
         estado = "[OK]" if ruta.exists() else "[PENDIENTE]"
@@ -173,7 +208,7 @@ def mostrar_status():
 
     print("\nFases pendientes de implementar por completo:")
     for clave, info in FASES.items():
-        if clave in ("eda", "modelado"):
+        if clave == "eda":
             print(f"  - {info['numero']} {info['nombre']} (esqueleto con TODOs)")
 
     print("\nPara ejecutar una fase: python main.py --fase <nombre_fase>")
@@ -198,7 +233,9 @@ def main():
   etl            : Limpieza e integración (ventas + recepción)
   eda            : Análisis Exploratorio de Datos
   transformacion : Codificación y escalamiento de características
-  modelado       : Modelo predictivo y evaluación vs línea base"""
+  agrupamiento   : K-means y árbol jerárquico de casos incompletos
+  modelado       : Modelo predictivo pre-lanzamiento y evaluación temporal
+  metodos_numericos : Ajuste por mínimos cuadrados e interpolación de Lagrange"""
     )
     parser.add_argument(
         "--status",
