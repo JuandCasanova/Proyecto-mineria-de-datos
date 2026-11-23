@@ -219,8 +219,11 @@ def opciones_categoria(dataset, columna):
 def formulario_prediccion(metricas, dataset):
     columnas = metricas["predictores"]
     st.markdown("#### Describe el juego")
-    st.caption("Completa lo que ya se conoce antes de su lanzamiento.")
-    with st.form("formulario_prediccion"):
+    st.caption(
+        "Completa estos cuatro datos para empezar. Editorial y desarrollador "
+        "son opcionales."
+    )
+    with st.container(border=True):
         c1, c2 = st.columns(2)
         year = c1.number_input(
             "Año de lanzamiento",
@@ -248,28 +251,27 @@ def formulario_prediccion(metricas, dataset):
             index=rating_default,
             help="Es la clasificación ESRB disponible antes del lanzamiento; no es la nota de crítica.",
         )
-        editoriales = opciones_categoria(dataset, "publisher")
-        desarrolladores = opciones_categoria(dataset, "developer")
-        c5, c6 = st.columns(2)
-        publisher = c5.selectbox(
-            "Editorial",
-            options=[None] + editoriales,
-            format_func=lambda valor: "No especificado" if valor is None else valor,
-            help=(
-                f"Busca entre {len(editoriales):,} editoriales del catálogo. "
-                "Si no se conoce, deja No especificado."
-            ),
-        )
-        developer = c6.selectbox(
-            "Desarrollador",
-            options=[None] + desarrolladores,
-            format_func=lambda valor: "No especificado" if valor is None else valor,
-            help=(
-                f"Busca entre {len(desarrolladores):,} desarrolladores del catálogo. "
-                "Si no se conoce, deja No especificado."
-            ),
-        )
-        enviar = st.form_submit_button(
+        with st.expander("Opcional: editorial y desarrollador"):
+            st.caption(
+                "Puedes dejar ambos como No especificado y continuar. "
+                "Escribe para buscar una opción del catálogo."
+            )
+            editoriales = opciones_categoria(dataset, "publisher")
+            desarrolladores = opciones_categoria(dataset, "developer")
+            c5, c6 = st.columns(2)
+            publisher = c5.selectbox(
+                "Editorial",
+                options=[None] + editoriales,
+                format_func=lambda valor: "No especificado" if valor is None else valor,
+                help=f"Busca entre {len(editoriales):,} editoriales del catálogo.",
+            )
+            developer = c6.selectbox(
+                "Desarrollador",
+                options=[None] + desarrolladores,
+                format_func=lambda valor: "No especificado" if valor is None else valor,
+                help=f"Busca entre {len(desarrolladores):,} desarrolladores del catálogo.",
+            )
+        enviar = st.button(
             "Calcular estimación",
             type="primary",
             width="stretch",
