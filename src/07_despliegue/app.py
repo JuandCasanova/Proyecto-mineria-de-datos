@@ -248,16 +248,26 @@ def formulario_prediccion(metricas, dataset):
             index=rating_default,
             help="Es la clasificación ESRB disponible antes del lanzamiento; no es la nota de crítica.",
         )
+        editoriales = opciones_categoria(dataset, "publisher")
+        desarrolladores = opciones_categoria(dataset, "developer")
         c5, c6 = st.columns(2)
-        publisher = c5.text_input(
+        publisher = c5.selectbox(
             "Editorial",
-            placeholder="Ej. Nintendo",
-            help="Puedes dejarlo vacío si aún no se conoce.",
+            options=[None] + editoriales,
+            format_func=lambda valor: "No especificado" if valor is None else valor,
+            help=(
+                f"Busca entre {len(editoriales):,} editoriales del catálogo. "
+                "Si no se conoce, deja No especificado."
+            ),
         )
-        developer = c6.text_input(
+        developer = c6.selectbox(
             "Desarrollador",
-            placeholder="Ej. Nintendo EAD",
-            help="Puedes dejarlo vacío si aún no se conoce.",
+            options=[None] + desarrolladores,
+            format_func=lambda valor: "No especificado" if valor is None else valor,
+            help=(
+                f"Busca entre {len(desarrolladores):,} desarrolladores del catálogo. "
+                "Si no se conoce, deja No especificado."
+            ),
         )
         enviar = st.form_submit_button(
             "Calcular estimación",
@@ -271,8 +281,8 @@ def formulario_prediccion(metricas, dataset):
             "platform": platform,
             "genre": genre,
             "rating": rating,
-            "publisher": publisher.strip() or np.nan,
-            "developer": developer.strip() or np.nan,
+            "publisher": publisher if publisher is not None else np.nan,
+            "developer": developer if developer is not None else np.nan,
         }
         entrada = pd.DataFrame([{columna: fila[columna] for columna in columnas}])
         probabilidad = float(cargar_modelo().predict_proba(entrada)[0, 1])
